@@ -1,0 +1,2264 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ariane Lesnyak | Digital Content Writer | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+
+.browser-frame {
+            width: 100%;
+            max-width: 600px;
+            background-color: #2b2b2b;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+            padding: 20px;
+            border: 1px solid #3d3d3d;
+        }
+
+        .browser-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.red { background-color: #ff5f56; }
+        .dot.yellow { background-color: #ffbd2e; }
+        .dot.green { background-color: #27c93f; }
+
+        .url-bar {
+            flex-grow: 0.9;
+            background-color: #3d3d3d;
+            border-radius: 8px;
+            padding: 8px 15px;
+            color: #999;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #00ff88;
+            border-radius: 8px;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-bar::placeholder {
+            color: #777;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 20px;
+            background-color: #00ff88;
+            vertical-align: middle;
+            margin-left: -5px;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Animação de digitação */
+        .typing-text {
+            overflow: hidden;
+            white-space: nowrap;
+            width: 0;
+            animation: typing 3s steps(40, end) forwards;
+            font-size: 16px;
+            color: #00ff88;
+            display: inline-block;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        /* Resultados de busca */
+        .results-list {
+            list-style: none;
+            padding: 0;
+            position: relative;
+            height: 200px;
+        }
+
+        .result-item {
+            background-color: #222;
+            border: 1px solid #333;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            width: 95%;
+            transition: top 1s ease-in-out, transform 1s ease-in-out;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .result-item h4 {
+            color: #8ab4f8;
+            margin: 0 0 5px 0;
+            font-size: 18px;
+        }
+
+        .result-item p {
+            font-size: 14px;
+            color: #b8b8b8;
+        }
+
+        .result-item .url {
+            font-size: 12px;
+            color: #9cd79f;
+        }
+
+        .ranking {
+            position: absolute;
+            right: 10px;
+            top: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #999;
+            transition: color 1s ease-in-out, transform 1s ease-in-out;
+        }
+
+        /* Posições iniciais */
+        #result-1 { top: 120px; z-index: 10; animation-delay: 3s; }
+        #result-2 { top: 0px; z-index: 12; animation-delay: 3s; }
+        #result-3 { top: 60px; z-index: 11; animation-delay: 3s; }
+
+        /* Animação de subida de ranking */
+        @keyframes moveUp {
+            from { transform: translateY(0); }
+            to { transform: translateY(-120px); }
+        }
+
+        @keyframes rankingPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Classe para o resultado otimizado */
+        .optimized {
+            background-color: #0d2820;
+            border-color: #00ff88;
+            animation: moveUp 1.5s 4.5s forwards;
+        }
+        
+        .optimized h4 {
+            color: #00ff88;
+        }
+
+        .optimized .ranking {
+            color: #00ff88;
+            animation: rankingPulse 1s 5.5s infinite;
+        }
+
+
+        .editor-frame {
+            width: 100%;
+            max-width: 700px;
+            height: 360px;
+            background-color: #2b2b2b;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+            padding: 30px;
+            border: 1px solid #3d3d3d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.red { background-color: #ff5f56; }
+        .dot.yellow { background-color: #ffbd2e; }
+        .dot.green { background-color: #27c93f; }
+
+        .editor-title {
+            flex-grow: 1;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .content-area {
+            line-height: 1.8;
+            font-size: 16px;
+            color: #e0e0e0;
+        }
+
+        .typing-text {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 0;
+            border-right: 2px solid #00ff88;
+            animation: typing 4s steps(40, end) forwards, blink-cursor 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-cursor {
+            from, to { border-color: transparent; }
+            50% { border-color: #00ff88; }
+        }
+
+        .flow-element {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s, transform 0.8s;
+            margin-top: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+              
+
+        .flow-element h4 {
+            color: #00ff88;
+            margin-bottom: 5px;
+        }
+
+        .flow-element p {
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        /* Animações sequenciais */
+        .flow-1 {
+            animation: show-flow 0.5s 4.5s forwards;
+        }
+        .flow-2 {
+            animation: show-flow 0.5s 6s forwards;
+        }
+        .flow-3 {
+            animation: show-flow 0.5s 7.5s forwards;
+        }
+
+        @keyframes show-flow {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        :root {
+            --primary-bg: #000000;
+            --primary-text: #ffffff;
+            --accent-color: #00ff88;
+            --accent-light: #33ff99;
+            --success-color: #00ff88;
+            --white: #FFFFFF;
+            --gray-light: #1a1a1a;
+            --gray-medium: #333333;
+            --shadow-soft: 0 10px 40px rgba(0,255,136,0.15);
+            --gradient-primary: linear-gradient(135deg, #00ff88 0%, #33ff99 100%);
+            --gradient-success: linear-gradient(135deg, #00ff88 0%, #33ff99 100%);
+            --gradient-bg: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-bg);
+            color: var(--primary-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        table,
+        tr,
+        td {
+            border-spacing: 5px;
+        }
+
+        /* Abstract background art inspired by Graphite design */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 255, 136, 0.03) 0%, transparent 50%);
+            z-index: -2;
+        }
+
+        /* Flowing abstract lines */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(45deg, transparent 40%, rgba(0, 255, 136, 0.02) 50%, transparent 60%),
+                linear-gradient(-45deg, transparent 40%, rgba(0, 255, 136, 0.02) 50%, transparent 60%);
+            background-size: 200px 200px, 150px 150px;
+            animation: abstractFlow 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes abstractFlow {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-200px) translateY(-200px); }
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        /* Graphite-inspired animations */
+        .velocity-text {
+            background: linear-gradient(135deg, #00ff88, #33ff99, #00ff88);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: velocityGradient 3s ease-in-out infinite;
+        }
+
+        @keyframes velocityGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .impact-card {
+            background: rgba(26, 26, 26, 0.8);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-soft);
+            border-left: 4px solid var(--accent-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .impact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .impact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.25);
+            background: rgba(26, 26, 26, 0.9);
+        }
+
+        .metric-highlight {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            height: 320px;
+            padding: 20px;
+            background: rgba(26, 26, 26, 0.8);
+            border-radius: 16px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-active {
+            background: var(--gradient-primary);
+            color: var(--primary-bg);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+        }
+
+        .tab-inactive {
+            background: rgba(26, 26, 26, 0.8);
+            color: var(--primary-text);
+            border: 2px solid var(--gray-medium);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* SEO-focused before/after sections */
+        .before-after-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .before-section, .after-section {
+            background: rgba(26, 26, 26, 0.8);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .before-section {
+            border-left: 4px solid #ef4444;
+        }
+
+        .after-section {
+            border-left: 4px solid var(--success-color);
+        }
+
+        /* SEO content animation */
+        .seo-content-bad {
+            background: rgba(239, 68, 68, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            animation: contentShake 2s ease-in-out infinite;
+        }
+
+        @keyframes contentShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+
+        .seo-content-good {
+            background: rgba(0, 255, 136, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .seo-keyword {
+            background: var(--gradient-success);
+            color: var(--primary-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+            animation: keywordPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes keywordPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Traffic growth animation */
+        .traffic-bar {
+            background: var(--gray-medium);
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .traffic-fill {
+            height: 100%;
+            background: var(--gradient-success);
+            border-radius: 10px;
+            transition: width 3s ease-out;
+            position: relative;
+        }
+
+        .traffic-fill::after {
+            content: '↗';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-bg);
+            font-weight: bold;
+        }
+
+        /* Revenue focus styling */
+        .revenue-focus {
+            background: linear-gradient(135deg, #135E39, #135E39);
+            color: var(--primary-bg);
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .revenue-focus::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shine 4s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0%, 100% { transform: translateX(-100%) translateY(-100%); }
+            50% { transform: translateX(0%) translateY(0%); }
+        }
+
+        @media (max-width: 768px) {
+            .before-after-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .metric-highlight {
+                font-size: 2rem;
+            }
+        }
+
+        /* Floating elements with green theme */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-text {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 1s ease-out 0.5s forwards;
+        }
+
+        .hero-subtitle {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 1s ease-out 1s forwards;
+        }
+
+        .hero-description {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 1s ease-out 1.5s forwards;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .gif-placeholder {
+            width: 100%;
+            height: 200px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gif-placeholder::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .gif-placeholder-text {
+            color: #00ff88;
+            font-weight: 600;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+}
+
+        .dashboard-frame {
+            width: 90%;
+            max-width: 800px;
+            background-color: #2b2b2b;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+            padding: 30px;
+            border: 1px solid #3d3d3d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-header h2 {
+            font-size: 24px;
+            color: #e0e0e0;
+        }
+
+        .dashboard-header .tool-name {
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 2px solid #00ff88;
+            border-radius: 8px;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .search-button {
+            padding: 12px 25px;
+            background-color: #00ff88;
+            color: #1a1a1a;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: #33ff99;
+        }
+
+        /* Animação de digitação */
+        .typing-text {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 0;
+            animation: typing 4s steps(40, end) forwards;
+            font-size: 16px;
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 20px;
+            background-color: #00ff88;
+            vertical-align: middle;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Animação dos resultados */
+        .results-container {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 1s 4.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { display: flex; }
+        }
+
+        .result-card {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+
+        .result-card h3 {
+            font-size: 18px;
+            color: #e0e0e0;
+            margin-bottom: 5px;
+        }
+
+        .result-card .metrics {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .metric-item {
+            text-align: center;
+        }
+
+        .metric-item .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        .metric-item .label {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* Animação do gráfico de tráfego */
+        .traffic-graph {
+            height: 150px;
+            background-color: #3d3d3d;
+            border-radius: 8px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .traffic-line {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            stroke: #00ff88;
+            stroke-width: 3;
+            fill: transparent;
+            animation: draw-line 3s linear forwards;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+
+        @keyframes draw-line {
+            to { stroke-dashoffset: 0; }
+        }
+        
+        .growth-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ff88;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+            opacity: 0;
+            animation: pop-up 1s 7.5s forwards;
+        }
+
+        @keyframes pop-up {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); 
+
+}
+       
+
+.editor-frame {
+            width: 90%;
+            max-width: 700px;
+            background-color: #2b2b2b;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+            padding: 30px;
+            border: 1px solid #3d3d3d;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .text-container {
+            font-size: 2.5rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        .text-initial {
+            opacity: 1;
+            transition: opacity 1s;
+        }
+
+        .text-modified {
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: opacity 1s 2s;
+            color: #00ff88;
+        }
+
+        .analysis-box {
+            margin-top: 30px;
+            background-color: #222;
+            border: 1px solid #444;
+            padding: 20px;
+            border-radius: 8px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s 3s, transform 1s 3s;
+        }
+        
+        .analysis-box p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .analysis-box strong {
+            color: #00ff88;
+        }
+
+        /* Animação */
+        .editor-frame.animate .text-initial {
+            opacity: 0;
+        }
+
+        .editor-frame.animate .text-modified {
+            opacity: 1;
+        }
+
+        .editor-frame.animate .analysis-box {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Adiciona a animação de digitação e remoção */
+        .typing-effect {
+            animation: typing 2s steps(20, end) forwards;
+        }
+
+        .deleting-effect {
+            animation: deleting 1s steps(10, end) forwards 1s;
+        }
+
+        .new-text-effect {
+            animation: typing 1s steps(10, end) forwards 2.5s;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header Section - Graphite Style -->
+    <header id="home" class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+        <!-- Floating SEO elements -->
+        <div class="absolute top-20 left-10 w-20 h-20 bg-green-400 rounded-full opacity-10 floating"></div>
+        <div class="absolute top-40 right-20 w-16 h-16 bg-green-300 rounded-full opacity-10 floating" style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-20 left-1/4 w-12 h-12 bg-green-500 rounded-full opacity-10 floating" style="animation-delay: 4s;"></div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h1 class="hero-text text-5xl md:text-7xl font-bold text-white mb-4">
+                Ariane Lesnyak
+            </h1>
+            <p class="hero-subtitle text-xl md:text-3xl font-bold mb-6">
+                <span class="velocity-text">Create SEO-impactful content. Drive engagement.</span>
+            </p>
+            <p class="hero-description text-lg md:text-xl max-w-4xl mx-auto text-white leading-relaxed">
+                Digital Content Writer with 10+ years creating and optimizing content <br> for agencies and global platforms
+                <br><span class="text-base text-gray-200 mt-2 block">Specialized in creative writing, topic pitching, and fact-checking for measurable SEO results</span>
+            </p>
+            
+            <!-- Impact metrics preview -->
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="bg-black/60 backdrop-blur p-4 rounded-lg shadow border border-green-500/20">
+                    <div class="metric-highlight">65%</div>
+                    <p class="text-sm font-medium text-white">Improved quality</p>
+                </div>
+                <div class="bg-black/60 backdrop-blur p-4 rounded-lg shadow border border-green-500/20">
+                    <div class="metric-highlight">85%</div>
+                    <p class="text-sm font-medium text-white">Faster creation</p>
+                </div>
+                <div class="bg-black/60 backdrop-blur p-4 rounded-lg shadow border border-green-500/20">
+                    <div class="metric-highlight">90%</div>
+                    <p class="text-sm font-medium text-white">Client Approval</p>
+                </div>
+            </div>
+            
+            <div class="mt-8">
+                <a href="#portfolio" class="inline-block bg-gradient-to-r from-green-500 to-green-400 text-black px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                    View Content Portfolio
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 bg-[#1a1a1a] z-50 shadow-lg backdrop-blur-sm">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-center items-center h-16 space-x-8">
+                <a href="#about" class="nav-link text-white hover:text-green-400 transition-all duration-300 font-medium px-4 py-2 rounded-lg">Focus</a>
+                <a href="#portfolio" class="nav-link text-white hover:text-green-400 transition-all duration-300 font-medium px-4 py-2 rounded-lg">Content Portfolio</a>
+                <a href="#experience" class="nav-link text-white hover:text-green-400 transition-all duration-300 font-medium px-4 py-2 rounded-lg">Experience</a>
+                <a href="#education" class="nav-link text-white hover:text-green-400 transition-all duration-300 font-medium px-4 py-2 rounded-lg">Education</a>
+                <a href="#certifications" class="nav-link text-white hover:text-green-400 transition-all duration-300 font-medium px-4 py-2 rounded-lg">Certifications</a>
+                <a href="#languages" class="nav-link text-white hover:text-green-400 transition-all duration-300 font-medium px-4 py-2 rounded-lg">Languages</a>
+                <a href="#results" class="nav-link text-white hover:text-green-400 transition-all duration-300 font-medium px-4 py-2 rounded-lg">Key Results</a>
+                <a href="#contact" class="nav-link text-white hover:text-green-400 transition-all duration-300 font-medium px-4 py-2 rounded-lg">Connect</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Experience Section -->
+        <section id="about" class="py-20 md:py-32 bg-gradient-to-br from-black to-gray-900">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-4 text-white">Focus on What Matters</h2>
+                <p class="text-xl text-center text-white mb-16 max-w-3xl mx-auto">
+                    Every organization has limits: budget, resources, time. I know how to identify the <strong class="text-green-400">5% of content work that generates 95% of SEO results</strong>.
+                </p>
+                
+                <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
+                    <div class="space-y-8">
+                        <!-- Key Impacts -->
+                        <div class="impact-card">
+                            <h3 class="font-bold text-xl mb-4 text-white">Proven SEO Impact</h3>
+                            <br><div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-medium">Improved quality</span>
+                                    <span class="metric-highlight text-2xl">65%</span>
+                                </div>
+                                <div class="traffic-bar">
+                                    <div class="traffic-fill" style="width: 65%"></div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <span class="font-medium">Faster creation</span>
+                                    <span class="metric-highlight text-2xl">85%</span>
+                                </div>
+                                <div class="traffic-bar">
+                                    <div class="traffic-fill" style="width: 85%"></div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <span class="font-medium">Client Approval</span>
+                                    <span class="metric-highlight text-2xl">90%</span>
+                                </div>
+                                <div class="traffic-bar">
+                                    <div class="traffic-fill" style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Content Velocity -->
+                        <div class="impact-card h-full">
+                            <h3 class="font-bold text-xl mb-4 text-white">Content Velocity</h3>
+                           <br> <br> <div class="grid grid-cols-2 gap-4 text-center mb-8">
+                                <div>
+                                    <div class="metric-highlight">200</div>
+                                    <p class="text-sm text-white">Articles/Month</p>
+                                </div>
+                                <div>
+                                    <div class="metric-highlight">15K+</div>
+                                    <p class="text-sm text-white">Assets Optimized</p>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="grid grid-cols-2 gap-4 text-center">
+                                <div>
+                                    <div class="metric-highlight">400</div>
+                                    <p class="text-sm text-white">Pieces Edited</p>
+                                </div>
+                                <div>
+                                    <div class="metric-highlight">50+</div>
+                                    <p class="text-sm text-white">Writers Managed</p><br><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-8">
+                        <!-- Professional Summary -->
+                        <div class="impact-card">
+                            <h3 class="font-bold text-xl mb-4 text-[#ffffff]">Digital Content Writing Expertise</h3>
+                            <p class="text-[#ffffff] leading-relaxed mb-6">
+                                Digital Content Writer with over 10 years creating and optimizing <strong>SEO-impactful content</strong> for agencies and global platforms. Specialist in creative writing, topic pitching, and fact-checking, with 65% improved quality and 90% approval for 400+ pieces.
+                            </p>
+                            <p class="text-[#ffffff] leading-relaxed">
+                                Fluent in English and Brazilian Portuguese, eager to contribute to <strong>Graphite's mission</strong> of delivering premium content for clients like MasterClass and Notion in a collaborative, data-driven environment.
+                            </p>
+                        </div>
+
+                        <!-- Tools & Skills -->
+                        <div class="impact-card">
+                            <h3 class="font-bold text-xl mb-4 text-white">Content Tools & Platforms</h3>
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="flex items-center p-2 bg-green-500/20 rounded-lg">
+                                    <span class="text-green-400 mr-2 text-sm">📊</span>
+                                    <span class="text-sm font-medium text-green-400">Ahrefs</span>
+                                </div>
+                                <div class="flex items-center p-2 bg-green-500/20 rounded-lg">
+                                    <span class="text-green-400 mr-2 text-sm">🔍</span>
+                                    <span class="text-sm font-medium text-green-400">Google Search Console</span>
+                                </div>
+                                <div class="flex items-center p-2 bg-green-500/20 rounded-lg">
+                                    <span class="text-green-400 mr-2 text-sm">⚡</span>
+                                    <span class="text-sm font-medium text-green-400">Salesforce</span>
+                                </div>
+                                <div class="flex items-center p-2 bg-green-500/20 rounded-lg">
+                                    <span class="text-green-400 mr-2 text-sm">✏️</span>
+                                    <span class="text-sm font-medium text-green-400">MateCat</span>
+                                </div>
+                            </div>
+                            <br>
+                            <h4 class="font-semibold mb-3 text-white">Core Content Skills:</h4>
+                            <div class="text-sm space-y-2">
+                                <p class="text-white"><strong>Writing:</strong> <span class="text-gray-300">Impactful content, pitching, brainstorming, fact-checking</span></p>
+                                <p class="text-white"><strong>SEO:</strong> <span class="text-gray-300">Keywords, title tags, metas</span></p>
+                                <p class="text-white"><strong>Team Management:</strong> <span class="text-gray-300">50+ writers, feedback systems, growth programs</span></p>
+                                <p class="text-white"><strong>Analytics:</strong> <span class="text-gray-300">Performance tracking, conversion optimization</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Impact Stories Section -->
+        <section id="portfolio" class="py-20 md:py-32 bg-gradient-to-br from-gray-900 to-black">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Content Portfolio</h2>
+                    <p class="text-xl text-white max-w-3xl mx-auto">
+                        Systematic approaches that deliver engaging content and drive SEO growth
+                    </p>
+                </div>
+                
+                <!-- Enhanced Tab Navigation -->
+                <div class="flex justify-center mb-12 space-x-4 flex-wrap">
+                    <button id="tab1" class="tab-btn px-6 py-3 font-semibold rounded-xl shadow-lg transition-all duration-300 tab-active mb-2">
+                        <span class="block text-sm">Article 1</span>
+                        <span class="block text-xs opacity-75">SEO in the Digital Era</span>
+                    </button>
+                    <button id="tab2" class="tab-btn px-6 py-3 font-semibold rounded-xl shadow-lg transition-all duration-300 tab-inactive mb-2">
+                        <span class="block text-sm">Article 2</span>
+                        <span class="block text-xs opacity-75">Streaming Platforms</span>
+                    </button>
+                    <button id="tab3" class="tab-btn px-6 py-3 font-semibold rounded-xl shadow-lg transition-all duration-300 tab-inactive mb-2">
+                        <span class="block text-sm">Article 3</span>
+                        <span class="block text-xs opacity-75">Automation & IA</span>
+                    </button>
+                     <button id="tab4" class="tab-btn px-6 py-3 font-semibold rounded-xl shadow-lg transition-all duration-300 tab-inactive mb-2">
+                        <span class="block text-sm">Article 4</span>
+                        <span class="block text-xs opacity-75">Hater's director statement</span>
+                    </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div id="tab-content" class="max-w-6xl mx-auto">
+                    <!-- Impact Story 1 -->
+                    <div id="content1" class="tab-pane">
+                        <div class="impact-card">
+                            <div class="text-center mb-8">
+                                <h3 class="text-3xl font-bold text-[#ffffff] mb-2">How SEO Drives Startup Growth in the Digital Era</h3>
+                                <div class="flex flex-wrap justify-center gap-4 mt-4">
+                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">Keywords: SEO for startups, growth hacking, content optimization</span>
+                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">Target: Startup founders, marketing teams</span>
+                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">Length: ~1,200 words</span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                                <div class="space-y-6">
+                                    <div>
+                                        <h4 class="font-bold text-xl mb-3 text-green-400 flex items-center">
+                                            <span class="mr-2">🎯</span> The Challenge
+                                        </h4>
+                                        <p class="text-[#ffffff] leading-relaxed">
+                                            Generic content with low traffic and engagement. Startups struggled to stand out in a saturated digital market with high acquisition costs and low organic visibility.
+                                        </p>
+                                    </div>
+                                    
+                                    <div>
+                                        <h4 class="font-bold text-xl mb-3 text-green-400 flex items-center">
+                                            <span class="mr-2">💡</span> The Solution
+                                        </h4>
+                                        <p class="text-[#ffffff] leading-relaxed mb-4">
+                                            I created a comprehensive guide on SEO for startups, combining keyword research with Ahrefs, strategic content optimization, and A/B testing methodologies. The article provided actionable insights with practical examples.
+                                        </p></div></div>
+<div><div>
+                                        <div class="seo-content-good">
+                                            <h5 class="font-semibold mb-2">Sample Excerpt:</h5>
+                                         <br>   <p>In the digital era, startups compete for attention in a saturated market. SEO (Search Engine Optimization) is the key to standing out, driving organic traffic and reducing acquisition costs. This guide explores how startups can use SEO to scale, based on tested strategies and tools like Ahrefs and Semrush.</p>
+                                         <br>   <p>Keyword Research: Use Ahrefs to identify low-competition terms with high volume (e.g., "API integration"). In QA projects, I selected keywords that increased discoverability by 95% for 30K+ users.</p><br></div>
+                                        </div>
+                                    </div>
+                                
+                                
+                                <div>
+                                    <h4 class="font-bold text-xl mb-4 text-left text-green-400 flex items-left justify-center">
+                                        <span class="mr-2">📊</span> The Results
+                                    </h4>
+                                    <div class="chart-container">
+                                        <canvas id="case1Chart"></canvas>
+                                </div> </div>
+
+
+
+ <div class="browser-frame">
+        <div class="browser-header">
+            <div class="dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+            </div>
+            <div class="url-bar">www.google.com</div>
+        </div>
+        
+        <div class="search-container">
+            <span class="typing-text">SEO for startups</span><span class="cursor"></span>
+        </div>
+
+        <ul class="results-list">
+            <li id="result-2" class="result-item"><br><br><br>
+                <div class="ranking">#1</div>
+                <h4>Complete SEO Guide</h4>
+                <p class="url">www.blog-marketing.com</p>
+                <p>Learn all about SEO and how to boost your organic traffic with this essential guide to digital marketing.</p>
+            </li>
+                  </ul>
+    </div>
+                                  </div>                            
+
+
+                            <!-- Before/After SEO Content -->
+                            <div class="before-after-container">
+                                <div class="before-section">
+                                    <h5 class="font-semibold text-lg mb-4 text-red-600">❌ Before: Generic Content</h5>
+                                    <div class="seo-content-bad">
+                                        How to use our platform for business
+                                        <br><br>This guide shows you different ways to use our platform. It covers many topics and features. You can learn about integrations, API, and more stuff...
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-2">No keyword focus, weak structure</p>
+                                </div>
+                                
+                                <div class="after-section">
+                                    <h5 class="font-semibold text-lg mb-4 text-green-600">✅ After: SEO-Optimized Content</h5>
+                                    <div class="seo-content-good">
+                                        <span class="seo-keyword">Business Platform Integration</span>: Complete Guide
+                                        <br><br>Master <span class="seo-keyword">API integration</span> and <span class="seo-keyword">workflow automation</span> to scale your business operations efficiently...
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-2">Strategic keywords, clear structure, 65% engagement improvement</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Impact Story 2 -->
+                    <div id="content2" class="tab-pane hidden">
+                        <div class="impact-card">
+                            <div class="text-center mb-8">
+                                <h3 class="text-3xl font-bold text-[#ffffff] mb-2">Creating Engaging Narratives for Streaming Platforms</h3>
+                                <div class="flex flex-wrap justify-center gap-4 mt-4">
+                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">Keywords: Streaming narratives, audience engagement, digital content</span>
+                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">Target: Content creators, streaming platforms</span>
+                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">Length: ~1,200 words</span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                                <div class="space-y-6">
+                                    <div>
+                                        <h4 class="font-bold text-xl mb-3 text-green-400 flex items-center">
+                                            <span class="mr-2">🎯</span> The Challenge
+                                        </h4>
+                                        <p class="text-[#ffffff] leading-relaxed">
+                                            Boring narratives in streaming content that failed to engage audiences and maintain viewer retention. Content lacked emotional hooks and SEO optimization for discoverability.
+                                        </p>
+                                    </div>
+                                    
+                                    <div>
+                                        <h4 class="font-bold text-xl mb-3 text-green-400 flex items-center">
+                                            <span class="mr-2">💡</span> The Solution
+                                        </h4>
+                                        <p class="text-[#ffffff] leading-relaxed mb-4">
+                                            I developed engaging guides through brainstorming sessions and strategic writing, focusing on narrative structure, audience research, and SEO integration for streaming platforms.
+                                        </p>
+
+	</div></div>
+<div><div>
+
+                                       <div class="seo-content-good">
+                                           <h5 class="font-semibold mb-2">Sample Excerpt:</h5><br> 
+                                            <p>Captivating narratives are the heart of streaming. With 400 episodes edited and 100% approval rate, I've learned to create content that hooks users. This guide shows how to write narratives optimized for engagement and SEO.</p><br><br>
+                                            <p>Audience Research: Analyze preferences (e.g., popular genres via Google Trends). In freelance projects, I researched topics for 750 series.</p><br> 
+                                        </div>
+                                    </div>
+                                </div>
+                                   
+                                <div>
+                                    <h4 class="font-bold text-xl mb-4 text-center text-green-400 flex items-center justify-center">
+                                        <span class="mr-2">📊</span> The Results
+                                    </h4>
+                                    <div class="chart-container">
+                                        <canvas id="case2Chart"></canvas>
+                                    </div>    </div>                                <div class="editor-frame">
+        <div class="editor-header">
+            <div class="dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+            </div>
+            <div class="editor-title">Google Docs - Narratives Storyboard</div>
+        </div>
+        
+        <div class="content-area">
+            <p>
+                <span class="typing-text">The Power of Narrative in Streaming.</span>
+            </p>
+            
+            <div class="flow-element flow-1">
+                <h4>1. Audience Research</h4>
+                <p>Analysis of preferences and trends (e.g., Google Trends).</p>
+            </div>
+            
+            <div class="flow-element flow-2">
+                <h4>2. Narrative Structure</h4>
+                <p>Creation of clear arcs: introduction, climax, and resolution.</p>
+            </div>
+
+            <div class="flow-element flow-3">
+                <h4>3. SEO Discoverability</h4>
+                <p>Integration of keywords for better discoverability</p>
+            </div>
+        </div>
+    </div>                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Impact Story 3 -->
+                    <div id="content3" class="tab-pane hidden">
+                        <div class="impact-card">
+                            <div class="text-center mb-8">
+                                <h3 class="text-3xl font-bold text-white mb-2">Automation and AI: How Startups Can Scale with Chatbots</h3>
+                                <div class="flex flex-wrap justify-center gap-4 mt-4">
+                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">Keywords: Chatbots, workflow automation, AI for startups</span>
+                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">Target: Startup leaders, support teams</span>
+                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">Length: ~1,200 words</span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                                <div class="space-y-6">
+                                    <div>
+                                        <h4 class="font-bold text-xl mb-3 text-green-400 flex items-center">
+                                            <span class="mr-2">🎯</span> The Challenge
+                                        </h4>
+                                        <p class="text-white leading-relaxed">
+                                            Inefficient workflows in startups leading to high operational costs, poor customer support experiences, and limited scalability without automation solutions.
+                                        </p>
+                                    </div>
+                                    
+                                    <div>
+                                        <h4 class="font-bold text-xl mb-3 text-green-400 flex items-center">
+                                            <span class="mr-2">💡</span> The Solution
+                                        </h4>
+                                        <p class="text-white leading-relaxed mb-4">
+                                            I wrote a comprehensive article on implementing AI-powered chatbots, covering objective setting, script writing, API integration, and success metrics based on real-world experience.
+                                        </p>
+                                      </div></div><div>  <div class="seo-content-good">
+                                            <h5 class="font-semibold mb-2">Sample Excerpt:</h5><br>
+                                            <p>AI-powered chatbots, like those I optimized at TW, transform customer support and automation. This article explores how startups can use chatbots to scale, save, and engage, based on my QA and content experience.</p>
+                                          <br>  <p>Defining Objectives: Set up chatbots for support (e.g., FAQs) or sales, as in my Salesforce projects.</p><br>
+                                        </div>
+                                    </div>
+                                
+                                
+                                <div>
+                                    <h4 class="font-bold text-xl mb-4 text-center text-green-400 flex items-center justify-center">
+                                        <span class="mr-2">📊</span> The Results
+                                    </h4>
+                                    <div class="chart-container">
+                                        <canvas id="case3Chart"></canvas>
+                                    </div></div><div>
+                                <br><br><br>    <div class="dashboard-frame">
+        <div class="dashboard-header">
+            <h2>Keyword Explorer</h2>
+            <div class="tool-name">SEO Tool Simulation (Ahrefs-like)</div>
+        </div>
+        
+        <div class="search-container">
+            <div class="search-input">
+                <span class="typing-text">startups and artificial intelligence</span>
+                <span class="cursor"></span>
+            </div>
+            <button class="search-button">Search</button>
+        </div>
+        </div>
+    </div>                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                 
+
+ <!-- Impact Story 4 -->
+<div id="content4" class="tab-pane hidden">
+    <div class="impact-card">
+        <div class="text-center mb-8">
+            <h3 class="text-3xl font-bold text-white mb-2">Hater - Director's Statement</h3>
+            <div class="flex flex-wrap justify-center gap-4 mt-4">
+                <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">Keywords: Horror narratives, social commentary, film analysis</span>
+                <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">Target: Film enthusiasts, critics</span>
+                <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">Genre: Director's statement</span>
+            </div>
+        </div>
+        
+        <div class="grid lg:grid-cols-2 gap-8 mb-8">
+            <div class="space-y-6">
+                <div>
+                    <h4 class="font-bold text-xl mb-3 text-green-400 flex items-center">
+                        <span class="mr-2">🎯</span> The Challenge
+                    </h4>
+                    <p class="text-white leading-relaxed">
+                        Content lacking social depth and meaningful commentary that fails to engage audiences beyond surface-level entertainment, missing opportunities for cultural impact.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-xl mb-3 text-green-400 flex items-center">
+                        <span class="mr-2">💡</span> The Solution
+                    </h4>
+                    <p class="text-white leading-relaxed mb-4">
+                        I crafted a reflective director's statement with insightful citations, connecting horror narratives to real-world social issues like racism and inequality, creating deeper engagement.
+                    </p>
+                   </div>
+                                    </div>                                
+                                
+                                <div>
+   <div class="seo-content-good">
+                        <h5 class="font-semibold mb-2">Sample Excerpt:</h5>
+                      <br>  <p>"That feeling that reality is dissolving, becoming unfamiliar and eerie—which is a feature of horror stories—can be easily recognized in our daily lives." <br><br> It is in such a way that the fantasy literature Argentine writer Mariana Enríquez endorsed on The Paraty International Literary Party the use of terror as a narrative genre to approach basic issues of social life, such as politics and inequality.</p><br></div>
+                    </div>
+                
+            
+           
+            <!-- COLUNA DIREITA -->
+            <div>                 <h4 class="font-bold text-xl mb-4 text-center text-green-400 flex items-center justify-center">
+                    <span class="mr-2">📊</span> The Results
+                </h4>
+               <div class="chart-container">
+                    <canvas id="case4Chart"></canvas>
+                </div></div><div>
+                <div class="editor-frame">
+                    <div class="editor-header">
+                        <div class="dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <div class="editor-title">Google Docs - Director's Statement</div>
+                    </div>
+                    
+                    <div class="content-area">
+                        <p>
+                            <span class="typing-text">"That feeling that reality is dissolving...</span>
+                        </p>
+                        
+                        <div class="flow-element flow-1">
+                            <h4>1. Social Depth</h4>
+                            <p>Connecting horror to real-world issues like racism and inequality.</p>
+                        </div>
+                        
+                        <div class="flow-element flow-2">
+                            <h4>2. Reflective Writing</h4>
+                            <p>Crafting insightful commentary with powerful citations.</p>
+                        </div>
+
+                        <div class="flow-element flow-3">
+                            <h4>3. Narrative Engagement</h4>
+                            <p>Captivating audiences by addressing deeper societal pains.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </section>
+
+        <!-- Experience Section -->
+      <section id="experience" class="py-20 md:py-32 bg-gradient-to-br from-gray-900 to-black">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Work Experience</h2>
+                    <p class="text-xl text-white max-w-3xl mx-auto">
+                        Over <strong class="text-green-400">10+ years</strong> of proven expertise in digital content writing and team management
+                    </p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto space-y-12">
+                    <!-- Experience 1 -->
+                    <div class="impact-card">
+                        <div class="flex flex-col md:flex-row md:items-start gap-6">
+                            <div class="md:w-1/3">
+                                <h3 class="text-2xl font-bold text-white mb-2">Senior Content Writer/Editor (SEO)</h3>
+                                <h4 class="text-lg font-semibold text-green-400 mb-2">(Governance & SEO)</h4>
+                                <p class="text-white font-medium mb-1">TW Business Content, Remote</p>
+                                <p class="text-gray-300 text-sm">October 2020 – Present</p>
+                                <p class="text-gray-300 text-sm mt-2 italic">Brazilian agency specializing in content governance and editorial validation for telecom clients</p>
+                            </div>
+                            
+                            <div class="md:w-2/3 space-y-4">
+                                <div class="flex items-start">
+                                    <span class="text-green-400 mr-3 mt-1">•</span>
+                                    <p class="text-white">Created <strong class="text-green-400">200-500 articles monthly</strong> on diverse topics, rewriting for keywords and engagement via A/B testing.</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-green-400 mr-3 mt-1">•</span>
+                                    <p class="text-white">Managed <strong class="text-green-400">50+ writers</strong>, pitching topics and developing style guides for SEO, resulting in <strong class="text-green-400">65% error reduction</strong>.</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-green-400 mr-3 mt-1">•</span>
+                                    <p class="text-white">Developed client style guides and content guidelines, including a <strong class="text-green-400">controlled vocabulary for corporate taxonomy</strong>, standardizing content across platforms.</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-green-400 mr-3 mt-1">•</span>
+                                    <p class="text-white">Conducted A/B testing to enhance engagement, reducing <strong class="text-green-400">creation cycles by 85%</strong> in a fast-paced environment.</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-green-400 mr-3 mt-1">•</span>
+                                    <p class="text-white">Prototyped SEO-optimized chatbot content, improving <strong class="text-green-400">Net Promoter Scores</strong>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Experience 2 -->
+                    <div class="impact-card">
+                        <div class="flex flex-col md:flex-row md:items-start gap-6">
+                            <div class="md:w-1/3">
+                                <h3 class="text-2xl font-bold text-white mb-2">Content Writer & QA Consultant</h3>
+                                <p class="text-white font-medium mb-1">Independent, Remote</p>
+                                <p class="text-gray-300 text-sm">2015 – Present</p>
+                                <p class="text-gray-300 text-sm mt-2 italic">Independent consultancy specializing in SEO content writing, localization QA, and process optimization</p>
+                            </div>
+                            
+                            <div class="md:w-2/3 space-y-4">
+                                <div class="flex items-start">
+                                    <span class="text-green-400 mr-3 mt-1">•</span>
+                                    <p class="text-white">Optimized narratives for up to <strong class="text-green-400">400 episodes (22 seasons)</strong> for streaming platforms, ensuring compelling narratives, grammar, and SEO keywords, achieving <strong class="text-green-400">90% client approval</strong>.</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-green-400 mr-3 mt-1">•</span>
+                                    <p class="text-white">Managed <strong class="text-green-400">50+ writers and linguists</strong>, delivering feedback on style, flow, and organization to meet deadlines.</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-green-400 mr-3 mt-1">•</span>
+                                    <p class="text-white">Implemented an error-tracking system for <strong class="text-green-400">750+ series</strong>, optimizing revisions and aligning with client SEO expectations.</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-green-400 mr-3 mt-1">•</span>
+                                    <p class="text-white">Wrote/edited UI/UX content and conducted pre-launch reviews, focusing on voice, development, and <strong class="text-green-400">keyword integration</strong>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+              <!-- Education Section -->
+        <section id="education" class="py-20 md:py-32 bg-gradient-to-br from-black to-gray-900">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Education</h2>
+                    <p class="text-xl text-white max-w-3xl mx-auto">
+                        Strong academic foundation in <strong class="text-green-400">linguistics</strong> and <strong class="text-green-400">technology</strong>
+                    </p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto space-y-8">
+                    <!-- Education 1 -->
+                    <div class="impact-card">
+                        <div class="flex flex-col md:flex-row md:items-start gap-6">
+                            <div class="md:w-1/3">
+                                <h3 class="text-2xl font-bold text-white mb-2">Bachelor's Degree</h3>
+                                <h4 class="text-lg font-semibold text-green-400 mb-2">Portuguese and English</h4>
+                                <p class="text-white font-medium mb-1">Universidade de São Paulo (USP)</p>
+                                <p class="text-gray-300 text-sm">São Paulo, Brazil</p>
+                                <p class="text-gray-300 text-sm">March 2015 – December 2019</p>
+                            </div>
+                            
+                            <div class="md:w-2/3">
+                                <p class="text-white mb-4">Focus: <strong class="text-green-400">Linguistics, Discourse Analysis, Intercultural Communication</strong></p>
+                                <p class="text-gray-300">Specialized in grammar, syntax, discourse analysis, and sociolinguistics. Developed deep understanding of language structure, communication patterns, and cultural context that directly applies to content editing and SEO optimization.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Education 2 -->
+                    <div class="impact-card">
+                        <div class="flex flex-col md:flex-row md:items-start gap-6">
+                            <div class="md:w-1/3">
+                                <h3 class="text-2xl font-bold text-white mb-2">Associate Degree</h3>
+                                <h4 class="text-lg font-semibold text-green-400 mb-2">Information Technology</h4>
+                                <p class="text-white font-medium mb-1">Marechal Rondon School</p>
+                                <p class="text-gray-300 text-sm">São Paulo, Brazil</p>
+                                <p class="text-gray-300 text-sm">January 2008 – December 2009</p>
+                            </div>
+                            
+                            <div class="md:w-2/3">
+                                <p class="text-white mb-4">Focus: <strong class="text-green-400">Database Management, Web Development, Systems Integration</strong></p>
+                                <p class="text-gray-300">Gained technical expertise in HTML/CSS, networking, and data mining. This technical foundation enables effective collaboration with development teams and understanding of SEO technical requirements.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+ <!-- Key Results Section -->
+        <section id="results" class="py-20 md:py-32 bg-gradient-to-br from-black to-gray-900">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Key Results</h2>
+                    <p class="text-xl text-white max-w-3xl mx-auto">
+                        Measurable impact across <strong class="text-green-400">content efficiency</strong> and <strong class="text-green-400">SEO performance</strong>
+                    </p>
+                </div>
+                
+                <div class="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Result Card 1 -->
+                    <div class="impact-card text-center group hover:scale-105 transition-all duration-300">
+                        <div class="mb-4 flex justify-center">
+                            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center group-hover:animate-pulse">
+                                <svg class="w-8 h-8 text-red-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-highlight">65%</div>
+                        <h3 class="font-bold text-xl mb-2 text-white">Improved quality</h3>
+                        <p class="text-white">Systematic editorial processes reduced content errors by 65% across all projects</p>
+                    </div>
+                    
+                    <!-- Result Card 2 -->
+                    <div class="impact-card text-center group hover:scale-105 transition-all duration-300">
+                        <div class="mb-4 flex justify-center">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center group-hover:animate-spin">
+                                <svg class="w-8 h-8 text-blue-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-highlight">85%</div>
+                        <h3 class="font-bold text-xl mb-2 text-white">Faster creation</h3>
+                        <p class="text-white">Streamlined feedback systems accelerated creation time by 85%</p>
+                    </div>
+                    
+                    <!-- Result Card 3 -->
+                    <div class="impact-card text-center group hover:scale-105 transition-all duration-300">
+                        <div class="mb-4 flex justify-center">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center group-hover:animate-bounce">
+                                <svg class="w-8 h-8 text-green-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-highlight">90%</div>
+                        <h3 class="font-bold text-xl mb-2 text-white">Client Approval</h3>
+                        <p class="text-white">High approval rate across 400+ pieces and multiple platforms</p>
+                    </div>
+                    
+                    <!-- Result Card 4 -->
+                    <div class="impact-card text-center group hover:scale-105 transition-all duration-300">
+                        <div class="mb-4 flex justify-center">
+                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center group-hover:animate-pulse">
+                                <svg class="w-8 h-8 text-purple-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-highlight">15K+</div>
+                        <h3 class="font-bold text-xl mb-2 text-white">Assets Optimized</h3>
+                        <p class="text-white">Successfully migrated and optimized over 15,000 content assets</p>
+                    </div>
+                    
+                    <!-- Result Card 5 -->
+                    <div class="impact-card text-center group hover:scale-105 transition-all duration-300">
+                        <div class="mb-4 flex justify-center">
+                            <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center group-hover:animate-pulse">
+                                <svg class="w-8 h-8 text-yellow-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-highlight">200</div>
+                        <h3 class="font-bold text-xl mb-2 text-white">Articles/Month</h3>
+                        <p class="text-white">Consistent high-volume content production with quality standards</p>
+                    </div>
+                    
+                    <!-- Result Card 6 -->
+                    <div class="impact-card text-center group hover:scale-105 transition-all duration-300">
+                        <div class="mb-4 flex justify-center">
+                            <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center group-hover:animate-bounce">
+                                <svg class="w-8 h-8 text-indigo-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-highlight">30K+</div>
+                        <h3 class="font-bold text-xl mb-2 text-white">Users Served</h3>
+                        <p class="text-white">Improved content organization for large-scale corporate platforms</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Certifications & Courses Section -->
+        <section id="certifications" class="py-20 md:py-32 bg-gradient-to-br from-gray-900 to-black">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Certifications & Courses</h2>
+                    <p class="text-xl text-white max-w-3xl mx-auto">
+                        Continuous learning in <strong class="text-green-400">SEO</strong>, <strong class="text-green-400">leadership</strong>, and <strong class="text-green-400">localization</strong>
+                    </p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+                    <!-- Certification 1 -->
+                    <div class="impact-card group hover:scale-105 transition-all duration-300">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center group-hover:animate-pulse">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-2">Ahrefs Academy</h3>
+                                <p class="text-green-400 font-medium mb-2">Digital Marketing with Ahrefs Tools</p>
+                                <p class="text-gray-300 text-sm">SEO content optimization and keyword research strategies</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Certification 2 -->
+                    <div class="impact-card group hover:scale-105 transition-all duration-300">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center group-hover:animate-pulse">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-2">Semrush Academy</h3>
+                                <p class="text-green-400 font-medium mb-2">SEO Essentials with Semrush</p>
+                                <p class="text-gray-300 text-sm">Advanced keyword research and SEO guidelines implementation</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Certification 3 -->
+                    <div class="impact-card group hover:scale-105 transition-all duration-300">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center group-hover:animate-pulse">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-2">Coursera</h3>
+                                <p class="text-green-400 font-medium mb-2">Leadership and Team Management</p>
+                                <p class="text-gray-300 text-sm">Writer feedback systems and team growth strategies</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Certification 4 -->
+                    <div class="impact-card group hover:scale-105 transition-all duration-300">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center group-hover:animate-pulse">
+                                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-2">Udemy</h3>
+                                <p class="text-green-400 font-medium mb-2">Advanced SEO Strategies 2025</p>
+                                <p class="text-gray-300 text-sm">Editorial and SEO alignment for modern content optimization</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Languages Section -->
+        <section id="languages" class="py-20 md:py-32 bg-gradient-to-br from-black to-gray-900">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Languages</h2>
+                    <p class="text-xl text-white max-w-3xl mx-auto">
+                        Multilingual expertise enabling <strong class="text-green-400">global content</strong> and <strong class="text-green-400">cross-cultural communication</strong>
+                    </p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+                    <!-- Portuguese -->
+                    <div class="impact-card group hover:scale-105 transition-all duration-300">
+                        <div class="flex items-center gap-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-green-400">
+                                    <div class="w-full h-full bg-gradient-to-r from-green-500 via-yellow-400 to-blue-600 flex items-center justify-center">
+                                        <span class="text-white font-bold text-lg">🇧🇷</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Portuguese</h3>
+                                    <p class="text-green-400 font-medium">Native</p>
+                                </div>
+                            </div>
+                            
+                            <div class="ml-auto flex gap-1">
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- English -->
+                    <div class="impact-card group hover:scale-105 transition-all duration-300">
+                        <div class="flex items-center gap-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-green-400">
+                                    <div class="w-full h-full bg-gradient-to-b from-blue-600 via-white to-red-600 flex items-center justify-center">
+                                        <span class="text-blue-600 font-bold text-lg">🇺🇸</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">English</h3>
+                                    <p class="text-green-400 font-medium">Bilingual</p>
+                                </div>
+                            </div>
+                            
+                            <div class="ml-auto flex gap-1">
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- French -->
+                    <div class="impact-card group hover:scale-105 transition-all duration-300">
+                        <div class="flex items-center gap-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-green-400">
+                                    <div class="w-full h-full bg-gradient-to-r from-blue-600 via-white to-red-600 flex items-center justify-center">
+                                        <span class="text-blue-600 font-bold text-lg">🇫🇷</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">French</h3>
+                                    <p class="text-green-400 font-medium">Advanced</p>
+                                </div>
+                            </div>
+                            
+                            <div class="ml-auto flex gap-1">
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-gray-600"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Spanish -->
+                    <div class="impact-card group hover:scale-105 transition-all duration-300">
+                        <div class="flex items-center gap-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-green-400">
+                                    <div class="w-full h-full bg-gradient-to-b from-red-600 via-yellow-400 to-red-600 flex items-center justify-center">
+                                        <span class="text-red-600 font-bold text-lg">🇪🇸</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Spanish</h3>
+                                    <p class="text-green-400 font-medium">Intermediate</p>
+                                </div>
+                            </div>
+                            
+                            <div class="ml-auto flex gap-1">
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-green-400"></div>
+                                <div class="w-4 h-4 rounded-full bg-gray-600"></div>
+                                <div class="w-4 h-4 rounded-full bg-gray-600"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12">
+                    <p class="text-gray-300 text-sm">Proficiency levels: 1-5 circles (Native • Fluent • Advanced • Intermediate • Basic)</p>
+                </div>
+            </div>
+        </section>
+
+
+       
+       <!-- Contact Section -->
+        <section id="contact" class="py-20 md:py-32 bg-gradient-to-br from-gray-900 to-black">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Let's Connect</h2>
+                    <p class="text-xl text-white max-w-3xl mx-auto">
+                        Ready to drive <strong class="text-green-400">SEO velocity</strong> and <strong class="text-green-400">measurable results</strong> for your content?
+                    </p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-12">
+                        <!-- Contact Info -->
+                        <div class="impact-card">
+                            <h3 class="font-bold text-xl mb-4 text-white">What I Bring</h3>
+                            <ul class="space-y-3 text-white">
+                                <li class="flex items-start">
+                                    <span class="text-green-400 mr-3">✓</span>
+                                    <span>10+ years of proven digital content writing expertise</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-green-400 mr-3">✓</span>
+                                    <span>Systematic processes that scale with your team</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-green-400 mr-3">✓</span>
+                                    <span>Focus on creative writing, topic pitching, and fact-checking for results</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-green-400 mr-3">✓</span>
+                                    <span>Measurable impact on engagement and SEO performance</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="impact-card">
+                            <h3 class="font-bold text-xl mb-4 text-white">Perfect For</h3>
+                            <ul class="space-y-3 text-white">
+                                <li class="flex items-start">
+                                    <span class="text-green-400 mr-3">→</span>
+                                    <span>Platform migrations requiring content creation and optimization</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-green-400 mr-3">→</span>
+                                    <span>High-volume content production with quality and SEO standards</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-green-400 mr-3">→</span>
+                                    <span>SEO-focused content strategy and implementation</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-green-400 mr-3">→</span>
+                                    <span>Content taxonomy and organization projects</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#1a1a1a] text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-2xl font-bold mb-4">Ariane Lesnyak</h3>
+            <p class="text-gray-400 mb-6">Digital Content Writer | Creating Engaging Narratives | Driving SEO Results</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://www.linkedin.com/in/arianelesnyak/" target="_blank" class="text-gray-400 hover:text-green-400 transition-colors duration-300">LinkedIn</a>
+                <a href="mailto:ariane.etimo@gmail.com" class="text-gray-400 hover:text-green-400 transition-colors duration-300">Email</a>
+            </div>
+            <p class="text-gray-500 text-sm">© 2025 Ariane Lesnyak. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+
+
+
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            tabs.forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    // Remove active classes from all tabs and panes
+                    tabs.forEach(t => t.classList.remove('tab-active'));
+                    tabs.forEach(t => t.classList.add('tab-inactive'));
+                    tabPanes.forEach(pane => pane.classList.add('hidden'));
+                    
+                    // Add active classes to clicked tab and corresponding pane
+                    tab.classList.remove('tab-inactive');
+                    tab.classList.add('tab-active');
+                    document.getElementById(`content${index + 1}`).classList.remove('hidden');
+                });
+            });
+            
+            // Initialize charts
+            initCharts();
+        });
+
+        function initCharts() {
+            // Case 1 Chart - Before/After Traffic
+            const ctx1 = document.getElementById('case1Chart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['Before', 'After'],
+                    datasets: [{
+                        label: 'Organic Traffic',
+                        data: [35, 100],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.7)',
+                            'rgba(0, 255, 136, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(0, 255, 136, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Organic Traffic Before/After (65% Increase)',
+                            color: '#ffffff',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#ffffff'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#ffffff'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Case 2 Chart - Client Approval
+            const ctx2 = document.getElementById('case2Chart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Approved', 'Revisions Needed'],
+                    datasets: [{
+                        data: [90, 10],
+                        backgroundColor: [
+                            'rgba(0, 255, 136, 0.8)',
+                            'rgba(239, 68, 68, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(0, 255, 136, 1)',
+                            'rgba(239, 68, 68, 0.5)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#ffffff',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: '100% Client Approval Rate',
+                            color: '#ffffff',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Case 3 Chart - Error Reduction
+            const ctx3 = document.getElementById('case3Chart').getContext('2d');
+            new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Error Rate',
+                        data: [100, 85, 60, 45, 35, 30],
+                        fill: false,
+                        backgroundColor: 'rgba(0, 255, 136, 0.2)',
+                        borderColor: 'rgba(0, 255, 136, 1)',
+                        tension: 0.3,
+                        pointBackgroundColor: 'rgba(0, 255, 136, 1)',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: '70% Error Reduction Over Time',
+                            color: '#ffffff',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#ffffff'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#ffffff'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Case 4 Chart - Topic Coverage
+            const ctx4 = document.getElementById('case4Chart').getContext('2d');
+            new Chart(ctx4, {
+                type: 'pie',
+                data: {
+                    labels: ['Racism', 'Inequality', 'Other Topics'],
+                    datasets: [{
+                        data: [45, 50, 5],
+                        backgroundColor: [
+                            'rgba(0, 255, 136, 0.8)',
+                            'rgba(239, 68, 68, 0.2)',
+                            'rgba(50, 50, 50, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(0, 255, 136, 1)',
+                            'rgba(0, 200, 120, 1)',
+                            'rgba(100, 100, 100, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#ffffff',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Topic Coverage (95% Findability)',
+                            color: '#ffffff',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const editor = document.querySelector('.editor-frame');
+            
+            // Adiciona a classe de animação após um breve atraso para o efeito inicial
+            setTimeout(() => {
+                editor.classList.add('animate');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
